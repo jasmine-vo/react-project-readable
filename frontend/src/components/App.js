@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ListPosts from './ListPosts.js';
 import * as API from '../utils/api';
 
@@ -24,15 +25,29 @@ class App extends Component {
     return (
       <div>
         <h1>Readable</h1>
-        {this.state.categories.map((category) => (
-        <button key={category}>
-          {category}
+        <button>
+          <Link
+            to="/"
+          >All</Link>
         </button>
+        {this.state.categories.map((category) => (
+          <button key={category}>
+            <Link
+              to={`/${category}`}
+            >{category}</Link>
+          </button>
         ))}
         <Route exact path="/" render={() => (
           <div>
             <ListPosts
               posts={this.state.posts}
+            />
+          </div>
+        )}/>
+        <Route path={`/:category`} render={(props) => (
+          <div>
+            <ListPosts
+              posts={this.state.posts.filter((post) => post.category === props.match.params.category)}
             />
           </div>
         )}/>
