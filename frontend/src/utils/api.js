@@ -9,9 +9,15 @@ const headers = {
   'Authorization': token
 }
 
+// Get all of the categories available for the app
 export const getCategories = () =>  {
-	return fetch(`${url}/categories`, { headers, credentials: 'include' })
-		.then(res => res.json())
-  		.then(({ categories }) => categories.map(({ name }) => name))
+  return fetch(`${url}/categories`, { headers, credentials: 'include' })
+    .then(res => res.json())
+    .then(({ categories }) => categories.map(({ name }) => name))
 }
 
+// Get all of the posts
+export const getPosts = () => {
+  return fetch(`${url}/posts`, { headers, credentials: 'include' })
+    .then(res => res.json())
+}
