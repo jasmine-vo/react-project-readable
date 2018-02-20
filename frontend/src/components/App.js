@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import ListPosts from './ListPosts.js';
+import PostDetail from './PostDetail.js';
 import * as API from '../utils/api';
 import sortBy from 'sort-by';
 
@@ -38,38 +38,28 @@ class App extends Component {
     return (
       <div>
         <h1>Readable</h1>
-        <button>
-          <Link
-            to="/"
-          >All</Link>
-        </button>
-        {this.state.categories.map((category) => (
-          <button key={category}>
-            <Link
-              to={`/${category}`}
-            >{category}</Link>
-          </button>
-        ))}
-		  <select
-            defaultValue="timestamp,reverse"
-			onChange={(event) => this.sortPosts(event.target.value)}>
-            <option value="none" disabled>Sort by...</option>
-            <option value="timestamp">Oldest to newest</option>
-			<option value="timestamp,reverse">Newest to oldest</option>
-            <option value="voteScore">Lowest to highest score</option>
-			<option value="voteScore,reverse">Highest to lowest score</option>
-          </select>
         <Route exact path="/" render={() => (
           <div>
             <ListPosts
+              categories={this.state.categories}
               posts={this.state.posts}
+              onSortPosts={this.sortPosts}
             />
           </div>
         )}/>
-        <Route path={`/:category`} render={(props) => (
+        <Route exact path={`/:category`} render={(props) => (
           <div>
             <ListPosts
+              categories={this.state.categories}
               posts={this.state.posts.filter((post) => post.category === props.match.params.category)}
+              onSortPosts={this.sortPosts}
+            />
+          </div>
+        )}/>
+        <Route exact path={`/:category/:id`} render={(props) => (
+          <div>
+            <PostDetail
+              id={props.match.params.id}
             />
           </div>
         )}/>

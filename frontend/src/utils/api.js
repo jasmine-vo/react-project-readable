@@ -21,3 +21,9 @@ export const getPosts = () => {
   return fetch(`${url}/posts`, { headers, credentials: 'include' })
     .then(res => res.json())
 }
+
+// Get the details of a single post
+export const getPostDetails = (id) => {
+  return fetch(`${url}/posts/${id}`, { headers, credentials: 'include' })
+	.then(res => res.json())
+}
