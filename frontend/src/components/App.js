@@ -2,20 +2,16 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import ListPosts from './ListPosts.js';
 import PostDetail from './PostDetail.js';
-import * as API from '../utils/api';
 import sortBy from 'sort-by';
+import * as API from '../utils/api';
 
 class App extends Component {
   state = {
-    categories: [],
-    posts: []
+    posts: [],
   }
 
 // load categories and posts from API after component is mounted
   componentDidMount() {
-    API.getCategories().then((data) => {
-      this.setState({ categories:data})
-    })
     API.getPosts().then((data) => {
       console.log(data)
       this.setState({ posts:data.sort(sortBy('-timestamp')) })
@@ -33,7 +29,7 @@ class App extends Component {
       this.setState((state) => ({ posts: this.state.posts.sort(sortBy(value)) }))
     }
   }
-
+   	
   render() {
     return (
       <div>
@@ -41,7 +37,6 @@ class App extends Component {
         <Route exact path="/" render={() => (
           <div>
             <ListPosts
-              categories={this.state.categories}
               posts={this.state.posts}
               onSortPosts={this.sortPosts}
             />
@@ -50,7 +45,6 @@ class App extends Component {
         <Route exact path={`/:category`} render={(props) => (
           <div>
             <ListPosts
-              categories={this.state.categories}
               posts={this.state.posts.filter((post) => post.category === props.match.params.category)}
               onSortPosts={this.sortPosts}
             />

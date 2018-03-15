@@ -2,11 +2,37 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { toDate } from '../utils/helpers';
+import Modal from 'react-modal';
+import PostForm from './PostForm';
+import * as API from '../utils/api';
 
 class ListPosts extends Component {
+
+  state = {
+    postModalOpen: false,
+    categories: [],
+  }
+
   static propTypes = {
     posts: PropTypes.array.isRequired,
-    categories: PropTypes.array.isRequired,
+  } 
+
+  componentDidMount() {
+    API.getCategories().then((data) => {
+      this.setState({ categories:data})
+    })
+  }
+
+  openPostModal = () => {
+    this.setState(() => ({
+      postModalOpen: true
+    }))
+  }
+
+  closePostModal = () => {
+    this.setState(() => ({
+      postModalOpen: false
+    }))
   }
 
   render() {
@@ -17,7 +43,7 @@ class ListPosts extends Component {
             to="/"
           >All</Link>
         </button>
-        {this.props.categories.map((category) => (
+        {this.state.categories.map((category) => (
           <button key={category}>
             <Link
               to={`/${category}`}
@@ -33,6 +59,11 @@ class ListPosts extends Component {
             <option value="voteScore">Lowest to highest score</option>
             <option value="voteScore,reverse">Highest to lowest score</option>
         </select>
+
+        <button onClick={() => this.openPostModal()}>
+          Add Post
+        </button>
+
         <ul>
           {this.props.posts.map((post) => (
             <li key={post.id}>
@@ -42,6 +73,22 @@ class ListPosts extends Component {
             </li>
           ))}
         </ul>
+
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={this.state.postModalOpen}
+          onRequestClose={this.closePostModal}
+          contentLabel='Modal'
+        >
+          <div>
+            <h3>New Post</h3>
+            <PostForm categories={this.state.categories} />
+            <button onClick={() => this.closePostModal()}>
+              Cancel
+            </button>
+          </div>
+        </Modal>
       </div>
     )
   }
