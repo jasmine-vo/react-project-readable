@@ -83,7 +83,10 @@ class ListPosts extends Component {
         >
           <div>
             <h3>New Post</h3>
-            <PostForm categories={this.state.categories} />
+            <PostForm
+              categories={this.state.categories}
+              onClosePostModal={this.closePostModal}
+            />
             <button onClick={() => this.closePostModal()}>
               Cancel
             </button>

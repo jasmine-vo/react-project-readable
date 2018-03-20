@@ -26,7 +26,7 @@ class PostForm extends Component {
       category: this.state.category
     }
     API.addNewPost(post);
-  	console.log(post.id);
+    this.props.onClosePostModal();
   }
 
   render() {
