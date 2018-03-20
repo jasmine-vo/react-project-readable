@@ -6,6 +6,7 @@ if (!token)
 
 const headers = {
   'Accept': 'application/json',
+  'Content-Type': 'application/json',
   'Authorization': token
 }
 
@@ -26,4 +27,14 @@ export const getPosts = () => {
 export const getPostDetails = (id) => {
   return fetch(`${url}/posts/${id}`, { headers, credentials: 'include' })
 	.then(res => res.json())
+}
+
+// Add a new post
+export const addNewPost = (post) => {
+  return fetch(`${url}/posts`, {
+    method: 'POST',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify(post)
+  }).then(data => data.json())
 }
