@@ -2,33 +2,8 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import ListPosts from './ListPosts.js';
 import PostDetail from './PostDetail.js';
-import sortBy from 'sort-by';
-import * as API from '../utils/api';
 
 class App extends Component {
-  state = {
-    posts: [],
-  }
-
-// load categories and posts from API after component is mounted
-  componentDidMount() {
-    API.getPosts().then((data) => {
-      console.log(data)
-      this.setState({ posts:data.sort(sortBy('-timestamp')) })
-    })
-  }
-
-  sortPosts = (values) => {
-    
-    const value = values.split(',')[0];
-    const reversed = values.split(',')[1] === 'reverse';
-
-    if (reversed) {
-      this.setState((state) => ({ posts: this.state.posts.sort(sortBy(`-${value}`)) }))
-    } else {
-      this.setState((state) => ({ posts: this.state.posts.sort(sortBy(value)) }))
-    }
-  }
    	
   render() {
     return (
@@ -36,17 +11,13 @@ class App extends Component {
         <h1>Readable</h1>
         <Route exact path="/" render={() => (
           <div>
-            <ListPosts
-              posts={this.state.posts}
-              onSortPosts={this.sortPosts}
-            />
+            <ListPosts />
           </div>
         )}/>
         <Route exact path={`/:category`} render={(props) => (
           <div>
             <ListPosts
-              posts={this.state.posts.filter((post) => post.category === props.match.params.category)}
-              onSortPosts={this.sortPosts}
+              category={props.match.params.category}
             />
           </div>
         )}/>
