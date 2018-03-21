@@ -26,6 +26,12 @@ class ListPosts extends Component {
     })
   }
 
+  addNewPost = (newPost) => {
+    this.setState(() => ({
+      posts: this.state.posts.concat([newPost])
+    }))
+  }
+
   sortPosts = (values) => {
     
     const value = values.split(',')[0];
@@ -110,6 +116,7 @@ class ListPosts extends Component {
             <PostForm
               categories={this.state.categories}
               onClosePostModal={this.closePostModal}
+              onAddNewPost={this.addNewPost}
             />
             <button onClick={() => this.closePostModal()}>
               Cancel

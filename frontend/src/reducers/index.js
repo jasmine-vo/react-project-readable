@@ -1,35 +1,20 @@
 import {
-	ADD_POST
+  ADD_POST
 } from '../actions'
 
-const initialPostState = {
-    	author: null,
-    	body: null,
-    	category: null,
-    	deleted: null,
-    	id: null,
-    	timestamp: null,
-    	title: null,
-}
 
-function post (state = initialPostState, action) {
-	const { author, body, category, deleted, id, timestamp, title } = action
-    
-    switch (action.type) {
-      case 'ADD_POST':
-    	return {
-          ...state,
-          [author]: ,
-          [body]: ,
-          [category]: ,
-          [deleted]: ,
-          [id]: ,
-          [timestamp]: ,
-          [title]: ,
-        }
-      default:
-        return state
-    }
+function post (state = {}, action) {
+  const { post } = action
+
+  switch (action.type) {
+    case ADD_POST:
+      return {
+        ...state,
+        post
+      }
+    default:
+      return state
+  }
 }
 
 export default post

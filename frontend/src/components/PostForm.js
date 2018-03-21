@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as API from '../utils/api';
+import { connect } from 'react-redux';
+import { addPost } from '../actions';
 
 class PostForm extends Component {
 
@@ -25,7 +27,8 @@ class PostForm extends Component {
       owner: this.state.author,
       category: this.state.category
     }
-    API.addNewPost(post);
+    API.addNewPost(post).then(data => this.props.onAddNewPost(data));
+    this.props.addPost(post);
     this.props.onClosePostModal();
   }
 
@@ -72,4 +75,13 @@ class PostForm extends Component {
   }
 }
 
-export default PostForm
+function mapDispatchToProps (dispatch) {
+  return {
+    addPost: (data) => dispatch(addPost(data)),
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(PostForm)
