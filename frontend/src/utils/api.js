@@ -38,3 +38,13 @@ export const addNewPost = (post) => {
     body: JSON.stringify(post)
   }).then(data => data.json())
 }
+
+// Vote on a post, takes in string 'upVote' or 'downVote'
+export const addPostVote = (id, vote) => {
+  return fetch(`${url}/posts/${id}`, {
+    method: 'POST',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify({ option: vote })
+  }).then(data => data.json())
+}
