@@ -1,12 +1,18 @@
 import {
-  ADD_POST
+  GET_POSTS,
+  ADD_POST,
 } from '../actions'
 
 
-function post (state = {}, action) {
-  const { post } = action
+function posts (state = {}, action) {
+  const { post, posts } = action
 
   switch (action.type) {
+    case GET_POSTS:
+      return {
+        ...state,
+        posts
+      }
     case ADD_POST:
       return {
         ...state,
@@ -17,4 +23,4 @@ function post (state = {}, action) {
   }
 }
 
-export default post
+export default posts

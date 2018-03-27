@@ -5,13 +5,14 @@ import Modal from 'react-modal';
 import PostForm from './PostForm';
 import * as API from '../utils/api';
 import sortBy from 'sort-by';
+import { connect } from 'react-redux';
+import { getPosts } from '../actions';
 
 class ListPosts extends Component {
 
   state = {
     postModalOpen: false,
     categories: [],
-    posts: [],
   }
 
   // load categories and posts from API after component is mounted
@@ -19,18 +20,14 @@ class ListPosts extends Component {
     API.getCategories().then((data) => {
       this.setState({ categories:data})
     })
-
-    API.getPosts().then((data) => {
-      console.log(data)
-      this.setState({ posts:data.sort(sortBy('-timestamp')) })
-    })
+    API.getPosts().then(data => this.props.getPosts(data.sort(sortBy('-timestamp'))));
   }
 
-  addNewPost = (newPost) => {
-    this.setState(() => ({
-      posts: this.state.posts.concat([newPost])
-    }))
-  }
+  // addNewPost = (newPost) => {
+  //   this.setState(() => ({
+  //     posts: this.state.posts.concat([newPost])
+  //   }))
+  // }
 
   sortPosts = (values) => {
     
@@ -38,10 +35,13 @@ class ListPosts extends Component {
     const reversed = values.split(',')[1] === 'reverse';
 
     if (reversed) {
-      this.setState((state) => ({ posts: this.state.posts.sort(sortBy(`-${value}`)) }))
+    	this.props.getPosts(this.props.posts.sort(sortBy(`-${value}`)))
+    	console.log(this.props.posts);
     } else {
-      this.setState((state) => ({ posts: this.state.posts.sort(sortBy(value)) }))
+    	this.props.getPosts(this.props.posts.sort(sortBy(value)))
+    	console.log(this.props.posts)
     }
+    this.forceUpdate();
   }
 
   openPostModal = () => {
@@ -58,13 +58,15 @@ class ListPosts extends Component {
 
   render() {
 
-    let posts = [];
+  	let posts = [];
 
     if (this.props.category) {
-      posts = this.state.posts.filter((post) => post.category === this.props.category)
+      posts = this.props.posts.filter((post) => post.category === this.props.category)
     } else {
-      posts = this.state.posts
+      posts = this.props.posts
     }
+
+    console.log(posts)
 
     return (
       <div>
@@ -93,7 +95,7 @@ class ListPosts extends Component {
         <button onClick={() => this.openPostModal()}>
           Add Post
         </button>
-
+      	{posts ?
         <ul>
           {posts.map((post) => (
             <li key={post.id}>
@@ -103,7 +105,7 @@ class ListPosts extends Component {
             </li>
           ))}
         </ul>
-
+        : null}
         <Modal
           className='modal'
           overlayClassName='overlay'
@@ -128,4 +130,19 @@ class ListPosts extends Component {
   }
 }
 
-export default ListPosts
+function mapStateToProps (state) {
+	return {
+		posts: state.posts
+	}
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    getPosts: (posts) => dispatch(getPosts(posts)),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ListPosts)
