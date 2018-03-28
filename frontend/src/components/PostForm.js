@@ -16,6 +16,7 @@ class PostForm extends Component {
   	this.setState({[event.target.name]: event.target.value});
   }
 
+  // update API with new post, 
   handleSubmit = (event) => {
     event.preventDefault();
     const uuidv1 = require('uuid/v1');
@@ -24,11 +25,11 @@ class PostForm extends Component {
       timestamp: Date.now(),
       title: this.state.title,
       body: this.state.body,
-      owner: this.state.author,
+      author: this.state.author,
       category: this.state.category
     }
-    API.addNewPost(post).then(data => this.props.onAddNewPost(data));
-    this.props.addPost(post);
+    API.addNewPost(post).then(data => this.props.addPost(data));
+    // this.props.addPost(post);
     this.props.onClosePostModal();
   }
 
@@ -75,13 +76,19 @@ class PostForm extends Component {
   }
 }
 
+function mapStateToProps (state) {
+  return {
+    posts: state.posts
+  }
+}
+
 function mapDispatchToProps (dispatch) {
   return {
-    addPost: (data) => dispatch(addPost(data)),
+    addPost: (post) => dispatch(addPost(post)),
   }
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(PostForm)

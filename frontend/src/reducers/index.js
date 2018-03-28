@@ -14,10 +14,12 @@ function posts (state = {}, action) {
         posts
       }
     case ADD_POST:
-      return {
-        ...state,
-        post
-      }
+      return Object.assign({}, state, {
+        posts: [
+          ...state.posts,
+          post
+        ]
+      })
     default:
       return state
   }

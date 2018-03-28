@@ -65,7 +65,7 @@ class ListPosts extends Component {
     } else {
       posts = this.props.posts
     }
-
+    console.log(this.props.posts)
     console.log(posts)
 
     return (
