@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as API from '../utils/api';
 import { toDate } from '../utils/helpers';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { updatePostScore } from '../actions';
 
 class PostDetail extends Component {
   state = {
@@ -18,7 +19,7 @@ class PostDetail extends Component {
     API.addPostVote(this.props.id, vote).then((data) => {
       this.setState({ post: data })
     });
-    // this.props.addPostVote(this.props.id, vote);
+    this.props.updatePostScore(this.state.post, vote);
   }
 
   render() {
@@ -42,15 +43,13 @@ class PostDetail extends Component {
   }
 }
 
-// function mapDispatchToProps (dispatch) {
-//   return {
-//     addPostVote: (id, vote) => dispatch(addPostVote(id, vote)),
-//   }
-// }
+function mapDispatchToProps (dispatch) {
+  return {
+    updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
+  }
+}
 
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(PostDetail)
-
-export default PostDetail;
+export default connect(
+  null,
+  mapDispatchToProps
+)(PostDetail)
