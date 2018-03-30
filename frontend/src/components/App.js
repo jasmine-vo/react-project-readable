@@ -4,7 +4,7 @@ import ListPosts from './ListPosts.js';
 import PostDetail from './PostDetail.js';
 
 class App extends Component {
-   	
+
   render() {
     return (
       <div>

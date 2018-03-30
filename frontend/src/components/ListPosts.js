@@ -6,42 +6,30 @@ import PostForm from './PostForm';
 import * as API from '../utils/api';
 import sortBy from 'sort-by';
 import { connect } from 'react-redux';
-import { getPosts } from '../actions';
+import { getPosts, getCategories } from '../actions';
 
 class ListPosts extends Component {
 
   state = {
     postModalOpen: false,
-    categories: [],
   }
 
   // load categories and posts from API after component is mounted
   componentDidMount() {
-    API.getCategories().then((data) => {
-      this.setState({ categories:data})
-    })
+    API.getCategories().then(data => this.props.getCategories(data));
     API.getPosts().then(data => this.props.getPosts(data.sort(sortBy('-timestamp'))));
   }
 
-  // addNewPost = (newPost) => {
-  //   this.setState(() => ({
-  //     posts: this.state.posts.concat([newPost])
-  //   }))
-  // }
-
   sortPosts = (values) => {
-    
+
     const value = values.split(',')[0];
     const reversed = values.split(',')[1] === 'reverse';
 
     if (reversed) {
-    	this.props.getPosts(this.props.posts.sort(sortBy(`-${value}`)))
-    	console.log(this.props.posts);
+      this.props.getPosts(this.props.posts.sort(sortBy(`-${value}`)))
     } else {
-    	this.props.getPosts(this.props.posts.sort(sortBy(value)))
-    	console.log(this.props.posts)
+      this.props.getPosts(this.props.posts.sort(sortBy(value)))
     }
-    this.forceUpdate();
   }
 
   openPostModal = () => {
@@ -58,7 +46,7 @@ class ListPosts extends Component {
 
   render() {
 
-  	let posts = [];
+    let posts = [];
 
     if (this.props.category) {
       posts = this.props.posts.filter((post) => post.category === this.props.category)
@@ -75,7 +63,7 @@ class ListPosts extends Component {
             to="/"
           >All</Link>
         </button>
-        {this.state.categories.map((category) => (
+        {this.props.categories.map((category) => (
           <button key={category}>
             <Link
               to={`/${category}`}
@@ -131,14 +119,16 @@ class ListPosts extends Component {
 }
 
 function mapStateToProps (state) {
-	return {
-		posts: state.posts
-	}
+  return {
+    posts: state.posts,
+        categories: state.categories
+  }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     getPosts: (posts) => dispatch(getPosts(posts)),
+    getCategories: (categories) => dispatch(getCategories(categories)),
   }
 }
 

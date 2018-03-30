@@ -5,7 +5,7 @@ import { addPost } from '../actions';
 
 class PostForm extends Component {
 
-	state = {
+  state = {
     title: '',
     author: '',
     category: 'react',
@@ -13,7 +13,7 @@ class PostForm extends Component {
   }
 
   handleChange = (event) => {
-  	this.setState({[event.target.name]: event.target.value});
+    this.setState({[event.target.name]: event.target.value});
   }
 
   // update API with new post, 
@@ -29,7 +29,6 @@ class PostForm extends Component {
       category: this.state.category
     }
     API.addNewPost(post).then(data => this.props.addPost(data));
-    // this.props.addPost(post);
     this.props.onClosePostModal();
   }
 
@@ -58,7 +57,7 @@ class PostForm extends Component {
           </label><br />
           <label>
             Category:
-            <select defaultValue={this.state.category} name="category" onChange={this.handleChange}>
+            <select defaultValue="react" name="category" onChange={this.handleChange}>
                 {this.props.categories.map((category, index) => (
                   <option value={category} key={index}>{category}</option>
                   ))
@@ -78,7 +77,7 @@ class PostForm extends Component {
 
 function mapStateToProps (state) {
   return {
-    posts: state.posts
+    categories: state.categories
   }
 }
 

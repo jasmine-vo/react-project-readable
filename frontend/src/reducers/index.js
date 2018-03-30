@@ -1,29 +1,33 @@
+import { combineReducers } from 'redux'
+
 import {
+  GET_CATEGORIES,
   GET_POSTS,
   ADD_POST,
   VOTE_POST,
 } from '../actions'
 
+function categories (state = [], action) {
+  const { categories } = action
 
-function posts (state = {}, action) {
+  switch (action.type) {
+    case GET_CATEGORIES:
+      return state.concat(categories)
+    default:
+      return state
+  }
+}
+
+function posts (state = [], action) {
   const { post, posts, vote } = action
 
   switch (action.type) {
     case GET_POSTS:
-      return {
-        ...state,
-        posts
-      }
+      return Object.assign([], state, posts)
     case ADD_POST:
-      return Object.assign({}, state, {
-        posts: [
-          ...state.posts,
-          post
-        ]
-      })
+      return state.concat(post)
     case VOTE_POST:
-      return Object.assign({}, state, {
-        posts: state.posts.map((p) => {
+      return state.map((p) => {
           if (p.id === post.id) {
             if (vote === 'upVote') {
               return Object.assign({}, p, {
@@ -37,10 +41,12 @@ function posts (state = {}, action) {
           }
           return p
         })
-      })
     default:
       return state
   }
 }
 
-export default posts
+export default combineReducers({
+  categories,
+  posts
+})
