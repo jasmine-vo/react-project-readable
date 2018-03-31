@@ -53,8 +53,6 @@ class ListPosts extends Component {
     } else {
       posts = this.props.posts
     }
-    console.log(this.props.posts)
-    console.log(posts)
 
     return (
       <div>
@@ -104,9 +102,7 @@ class ListPosts extends Component {
           <div>
             <h3>New Post</h3>
             <PostForm
-              categories={this.state.categories}
               onClosePostModal={this.closePostModal}
-              onAddNewPost={this.addNewPost}
             />
             <button onClick={() => this.closePostModal()}>
               Cancel
