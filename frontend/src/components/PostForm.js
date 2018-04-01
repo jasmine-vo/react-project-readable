@@ -12,6 +12,15 @@ class PostForm extends Component {
     body: ''
   }
 
+  componentWillMount() {
+    if (this.props.post) {
+      this.setState({
+        title: this.props.post.title,
+        body: this.props.post.body
+      })
+    }
+  }
+
   handleChange = (event) => {
     this.setState({[event.target.name]: event.target.value});
   }
@@ -19,16 +28,20 @@ class PostForm extends Component {
   // update API with new post, 
   handleSubmit = (event) => {
     event.preventDefault();
-    const uuidv1 = require('uuid/v1');
-    const post = {
-      id: uuidv1(),
-      timestamp: Date.now(),
-      title: this.state.title,
-      body: this.state.body,
-      author: this.state.author,
-      category: this.state.category
+    if (this.props.post) {
+      API.editPost(this.props.post.id, this.state.title, this.state.body).then(data => console.log(data));
+    } else {
+      const uuidv1 = require('uuid/v1')
+      const post = {
+        id: uuidv1(),
+        timestamp: Date.now(),
+        title: this.state.title,
+        body: this.state.body,
+        author: this.state.author,
+        category: this.state.category
+      }
+      API.addNewPost(post).then(data => this.props.addPost(data));
     }
-    API.addNewPost(post).then(data => this.props.addPost(data));
     this.props.onClosePostModal();
   }
 
@@ -40,24 +53,40 @@ class PostForm extends Component {
     */
 
     const enabled =
-      this.state.title.length > 0 &&
+      this.props.post ||
+      (this.state.title.length > 0 &&
       this.state.body.length > 0 &&
-      this.state.author.length > 0;
+      this.state.author.length > 0);
 
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
           <label>
             Title:
-            <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+            <input
+              type="text"
+              name="title"
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
           </label><br />
           <label>
             Author:
-            <input type="text" name="author" value={this.state.author} onChange={this.handleChange} />
+            <input
+              type="text"
+              name="author"
+              value={this.props.post ? this.props.post.author : this.state.author}
+              onChange={this.handleChange}
+              disabled={this.props.post ? true : false}
+            />
           </label><br />
           <label>
             Category:
-            <select defaultValue="react" name="category" onChange={this.handleChange}>
+            <select
+              defaultValue={this.props.post ? this.props.category : `react`}
+              name="category"
+              onChange={this.handleChange}
+              disabled={this.props.post ? true : false}>
                 {this.props.categories.map((category, index) => (
                   <option value={category} key={index}>{category}</option>
                   ))
@@ -66,7 +95,12 @@ class PostForm extends Component {
           </label>
           <label>
             Body:
-            <input type="text" name="body" value={this.state.body} onChange={this.handleChange} />
+            <input
+              type="text"
+              name="body"
+              value={this.state.body}
+              onChange={this.handleChange}
+            />
           </label><br />
           <input type="submit" value="Submit" disabled={!enabled}/>
         </form>
@@ -84,6 +118,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     addPost: (post) => dispatch(addPost(post)),
+    // editPost: (id, title, body) => dispatch(editPost(id, title, body))
   }
 }
 

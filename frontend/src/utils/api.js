@@ -48,3 +48,16 @@ export const addPostVote = (id, vote) => {
     body: JSON.stringify({ option: vote })
   }).then(data => data.json())
 }
+
+// Edit the details of an existing post
+export const editPost = (id, title, body) => {
+  return fetch(`${url}/posts/${id}`, {
+    method: 'PUT',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify({
+      title: title,
+      body: body
+    })
+  }).then(data => data.json())
+}
