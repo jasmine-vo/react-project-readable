@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as API from '../utils/api';
 import { connect } from 'react-redux';
-import { addPost } from '../actions';
+import { addPost, editPost } from '../actions';
 
 class PostForm extends Component {
 
@@ -29,7 +29,8 @@ class PostForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.props.post) {
-      API.editPost(this.props.post.id, this.state.title, this.state.body).then(data => console.log(data));
+      API.editPost(this.props.post.id, this.state.title, this.state.body)
+        .then(data => this.props.editPost(data));
     } else {
       const uuidv1 = require('uuid/v1')
       const post = {
@@ -118,7 +119,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     addPost: (post) => dispatch(addPost(post)),
-    // editPost: (id, title, body) => dispatch(editPost(id, title, body))
+    editPost: (post) => dispatch(editPost(post))
   }
 }
 

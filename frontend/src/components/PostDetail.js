@@ -2,26 +2,25 @@ import React, { Component } from 'react';
 import * as API from '../utils/api';
 import { toDate } from '../utils/helpers';
 import { connect } from 'react-redux';
-import { updatePostScore } from '../actions';
+import { updatePostScore, getPostDetails } from '../actions';
 import Modal from 'react-modal';
 import PostForm from './PostForm';
 
 class PostDetail extends Component {
   state = {
-    post: [],
     postModalOpen: false,
   }
 
-  componentDidMount() {
+  componentWillMount() {
     API.getPostDetails(this.props.id).then((data) => {
-      this.setState({ post: data})
+      this.props.getPostDetails(data);
     })
   }
 
   openPostModal = () => {
     this.setState(() => ({
       postModalOpen: true
-    }))
+    })) 
   }
 
   closePostModal = () => {
@@ -32,24 +31,21 @@ class PostDetail extends Component {
 
   handleVote = (vote) => {
     API.addPostVote(this.props.id, vote).then((data) => {
-      this.setState({ post: data })
+      this.props.updatePostScore(data);
     });
-    this.props.updatePostScore(this.state.post, vote);
   }
 
   render() {
-
-  console.log(this.state.post)
     
     return (
       <div>
-        <h3>{this.state.post.title}</h3>
-        submitted on {toDate(this.state.post.timestamp)} by {this.state.post.author}
-        <p>{this.state.post.body}</p>
+        <h3>{this.props.post.title}</h3>
+        submitted on {toDate(this.props.post.timestamp)} by {this.props.post.author}
+        <p>{this.props.post.body}</p>
         <button onClick={() => this.openPostModal()}>
           Edit Post
         </button>
-        <p>vote score: {this.state.post.voteScore}</p>
+        <p>vote score: {this.props.post.voteScore}</p>
         <button onClick={() => this.handleVote('downVote')}>
           -
         </button>
@@ -67,7 +63,7 @@ class PostDetail extends Component {
             <h3>Edit Post</h3>
             <PostForm
               onClosePostModal={this.closePostModal}
-              post={this.state.post}
+              post={this.props.post}
             />
             <button onClick={() => this.closePostModal()}>
               Cancel
@@ -79,13 +75,20 @@ class PostDetail extends Component {
   }
 }
 
+function mapStateToProps (state) {
+  return {
+    post: state.post
+  }
+}
+
 function mapDispatchToProps (dispatch) {
   return {
     updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
+    getPostDetails: (post) => dispatch(getPostDetails(post))
   }
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(PostDetail)

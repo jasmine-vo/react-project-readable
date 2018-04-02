@@ -5,6 +5,8 @@ import {
   GET_POSTS,
   ADD_POST,
   VOTE_POST,
+  EDIT_POST,
+  GET_POST_DETAILS
 } from '../actions'
 
 function categories (state = [], action) {
@@ -19,28 +21,28 @@ function categories (state = [], action) {
 }
 
 function posts (state = [], action) {
-  const { post, posts, vote } = action
+  const { post, posts } = action
 
   switch (action.type) {
     case GET_POSTS:
       return Object.assign([], state, posts)
     case ADD_POST:
       return state.concat(post)
+    default:
+      return state
+  }
+}
+
+function post (state = [], action) {
+  const { post } = action
+
+  switch (action.type) {
+    case GET_POST_DETAILS:
+      return Object.assign([], state, post)
+    case EDIT_POST:
+      return Object.assign([], state, post)
     case VOTE_POST:
-      return state.map((p) => {
-          if (p.id === post.id) {
-            if (vote === 'upVote') {
-              return Object.assign({}, p, {
-                voteScore: p.voteScore + 1
-              })
-            } else {
-              return Object.assign({}, p, {
-                voteScore: p.voteScore - 1
-              })
-            }
-          }
-          return p
-        })
+      return Object.assign([], state, post)
     default:
       return state
   }
@@ -48,5 +50,6 @@ function posts (state = [], action) {
 
 export default combineReducers({
   categories,
-  posts
+  posts,
+  post
 })
