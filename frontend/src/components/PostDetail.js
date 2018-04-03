@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { updatePostScore, getPostDetails } from '../actions';
 import Modal from 'react-modal';
 import PostForm from './PostForm';
+import { withRouter } from 'react-router-dom'
 
 class PostDetail extends Component {
   state = {
@@ -39,6 +40,7 @@ class PostDetail extends Component {
     API.deletePost(this.props.post.id).then((data) => {
       console.log(data)
     })
+    this.props.history.push('/');
   }
 
   render() {
@@ -97,7 +99,9 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PostDetail)
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(PostDetail)
+);
