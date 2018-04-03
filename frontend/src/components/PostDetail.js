@@ -15,10 +15,10 @@ class PostDetail extends Component {
   componentWillMount() {
     API.getPostDetails(this.props.id).then((data) => {
       this.props.getPostDetails(data);
+      console.log(this.props.post)
     })
     API.getComments(this.props.id).then((data) => {
       this.props.getComments(data, this.props.id);
-      console.log(data)
     })
   }
 
@@ -49,6 +49,9 @@ class PostDetail extends Component {
     
     return (
       <div>
+        <button onClick={() => this.props.history.goBack()}>
+          Back
+        </button>
         <h3>{this.props.post.title}</h3>
         submitted on {toDate(this.props.post.timestamp)} by {this.props.post.author}
         <p>{this.props.post.body}</p>
