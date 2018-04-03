@@ -15,7 +15,7 @@ function categories (state = [], action) {
 
   switch (action.type) {
     case GET_CATEGORIES:
-      return state.concat(categories)
+      return Object.assign([], state, categories)
     default:
       return state
   }
