@@ -35,6 +35,12 @@ class PostDetail extends Component {
     });
   }
 
+  handleDeletePost = () => {
+    API.deletePost(this.props.post.id).then((data) => {
+      console.log(data)
+    })
+  }
+
   render() {
     
     return (
@@ -44,6 +50,9 @@ class PostDetail extends Component {
         <p>{this.props.post.body}</p>
         <button onClick={() => this.openPostModal()}>
           Edit Post
+        </button>
+        <button onClick={() => this.handleDeletePost()}>
+          Delete Post
         </button>
         <p>vote score: {this.props.post.voteScore}</p>
         <button onClick={() => this.handleVote('downVote')}>

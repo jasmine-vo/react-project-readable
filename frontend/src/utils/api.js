@@ -61,3 +61,12 @@ export const editPost = (id, title, body) => {
     })
   }).then(data => data.json())
 }
+
+// Sets the deleted flag for a post to 'true' and
+// sets the parentDeleted flag for all child comments to 'true'
+export const deletePost = (id) =>
+  fetch(`${url}/posts/${id}`, {
+    method: 'DELETE',
+    headers,
+    credentials: 'include'
+  }).then(res => console.log(res))
