@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { updatePostScore, getPostDetails, getComments } from '../actions';
 import Modal from 'react-modal';
 import PostForm from './PostForm';
+import CommentForm from './CommentForm';
 import { withRouter } from 'react-router-dom'
 
 class PostDetail extends Component {
@@ -46,7 +47,7 @@ class PostDetail extends Component {
   }
 
   render() {
-    
+
     return (
       <div>
         <button onClick={() => this.props.history.goBack()}>
@@ -68,6 +69,7 @@ class PostDetail extends Component {
         <button onClick={() => this.handleVote('upVote')}>
           +
         </button>
+        <CommentForm parentId={this.props.id} />
         {this.props.comments[this.props.id] ?
           <ul>
             {this.props.comments[this.props.id].map((comment) => (

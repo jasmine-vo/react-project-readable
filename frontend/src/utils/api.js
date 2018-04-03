@@ -78,3 +78,13 @@ export const getComments = (id) => {
     credentials: 'include'
   }).then(data => data.json())
 }
+
+// Add a comment to a post
+export const addComment = (comment) => {
+  return fetch(`${url}/comments`, {
+    method: 'POST',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify(comment)
+  }).then(data => data.json())
+}
