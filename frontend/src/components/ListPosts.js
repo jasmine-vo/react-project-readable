@@ -49,9 +49,9 @@ class ListPosts extends Component {
     let posts = [];
 
     if (this.props.category) {
-      posts = this.props.posts.filter((post) => post.category === this.props.category)
+      posts = this.props.posts.filter((post) => post.category === this.props.category).filter((post) => post.deleted !== true)
     } else {
-      posts = this.props.posts
+      posts = this.props.posts.filter((post) => post.deleted !== true)
     }
 
     return (
