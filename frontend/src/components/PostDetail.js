@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as API from '../utils/api';
 import { toDate } from '../utils/helpers';
 import { connect } from 'react-redux';
-import { updatePostScore, getPostDetails } from '../actions';
+import { updatePostScore, getPostDetails, getComments } from '../actions';
 import Modal from 'react-modal';
 import PostForm from './PostForm';
 import { withRouter } from 'react-router-dom'
@@ -15,6 +15,10 @@ class PostDetail extends Component {
   componentWillMount() {
     API.getPostDetails(this.props.id).then((data) => {
       this.props.getPostDetails(data);
+    })
+    API.getComments(this.props.id).then((data) => {
+      this.props.getComments(data, this.props.id);
+      console.log(data)
     })
   }
 
@@ -37,9 +41,7 @@ class PostDetail extends Component {
   }
 
   handleDeletePost = () => {
-    API.deletePost(this.props.post.id).then((data) => {
-      console.log(data)
-    })
+    API.deletePost(this.props.post.id);
     this.props.history.push('/');
   }
 
@@ -63,6 +65,17 @@ class PostDetail extends Component {
         <button onClick={() => this.handleVote('upVote')}>
           +
         </button>
+        {this.props.comments[this.props.id] ?
+          <ul>
+            {this.props.comments[this.props.id].map((comment) => (
+              <li key={comment.id}>
+                {comment.body}<br />
+                posted by {comment.author} on {toDate(comment.timestamp)}<br />
+                votescore {comment.voteScore}
+              </li>
+            ))}
+          </ul>
+        : `No Comments`}
         <Modal
           className='modal'
           overlayClassName='overlay'
@@ -88,14 +101,16 @@ class PostDetail extends Component {
 
 function mapStateToProps (state) {
   return {
-    post: state.post
+    post: state.post,
+    comments: state.comments
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
-    getPostDetails: (post) => dispatch(getPostDetails(post))
+    getPostDetails: (post) => dispatch(getPostDetails(post)),
+    getComments: (comments, parentId) => dispatch(getComments(comments, parentId)) 
   }
 }
 

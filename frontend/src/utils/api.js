@@ -70,3 +70,11 @@ export const deletePost = (id) =>
     headers,
     credentials: 'include'
   }).then(res => console.log(res))
+
+// Get all the comments for a signle post
+export const getComments = (id) => {
+  return fetch (`${url}/posts/${id}/comments`, {
+    headers,
+    credentials: 'include'
+  }).then(data => data.json())
+}

@@ -4,6 +4,8 @@ export const ADD_POST = 'ADD_POST'
 export const VOTE_POST = 'VOTE_POST'
 export const EDIT_POST = 'EDIT_POST'
 export const GET_POST_DETAILS = 'GET_POST_DETAILS'
+export const GET_COMMENTS = 'GET_COMMENTS'
+
 
 export function getCategories (categories) {
   return {
@@ -26,11 +28,10 @@ export function addPost (post) {
   }
 }
 
-export function updatePostScore (post, vote) {
+export function updatePostScore (post) {
   return {
     type: VOTE_POST,
     post,
-    vote
   }
 }
 
@@ -45,5 +46,13 @@ export function getPostDetails (post) {
   return {
     type: GET_POST_DETAILS,
     post
+  }
+}
+
+export function getComments (comments, parentId) {
+  return {
+    type: GET_COMMENTS,
+    comments,
+    parentId
   }
 }

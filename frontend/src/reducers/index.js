@@ -6,7 +6,8 @@ import {
   ADD_POST,
   VOTE_POST,
   EDIT_POST,
-  GET_POST_DETAILS
+  GET_POST_DETAILS,
+  GET_COMMENTS
 } from '../actions'
 
 function categories (state = [], action) {
@@ -48,8 +49,23 @@ function post (state = [], action) {
   }
 }
 
+function comments (state = {}, action) {
+  const { comments, parentId } = action
+
+  switch (action.type) {
+    case GET_COMMENTS:
+      return {
+        ...state,
+        [parentId]: comments
+      }
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   categories,
   posts,
-  post
+  post,
+  comments
 })
