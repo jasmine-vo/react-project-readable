@@ -26,6 +26,10 @@ class CommentForm extends Component {
       parentId: this.props.parentId
     }
     API.addComment(comment).then(data => this.props.addComment(data));
+    this.setState({
+      body: '',
+      author: '',
+    })
   }
 
   render() {
