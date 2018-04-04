@@ -46,14 +46,6 @@ class ListPosts extends Component {
 
   render() {
 
-    let posts = [];
-
-    if (this.props.category) {
-      posts = this.props.posts.filter((post) => post.category === this.props.category).filter((post) => post.deleted !== true)
-    } else {
-      posts = this.props.posts.filter((post) => post.deleted !== true)
-    }
-
     return (
       <div>
         <button>
@@ -81,9 +73,9 @@ class ListPosts extends Component {
         <button onClick={() => this.openPostModal()}>
           Add Post
         </button>
-      	{posts ?
+        {this.props.posts ?
         <ul>
-          {posts.map((post) => (
+          {this.props.posts.map((post) => (
             <li key={post.id}>
               <Link
                 to={`/${post.category}/${post.id}`}
@@ -91,7 +83,7 @@ class ListPosts extends Component {
             </li>
           ))}
         </ul>
-        : null}
+        : `No Posts`}
         <Modal
           className='modal'
           overlayClassName='overlay'
@@ -114,10 +106,17 @@ class ListPosts extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    posts: state.posts,
-        categories: state.categories
+function mapStateToProps (state, ownProps) {
+  if (ownProps.category) {
+    return {
+      posts: state.posts.filter((post) => post.category === ownProps.category && !(post.deleted)),
+      categories: state.categories,
+    }
+  } else {
+    return {
+      posts: state.posts.filter((post) => !(post.deleted)),
+      categories: state.categories,
+    }
   }
 }
 
