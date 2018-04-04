@@ -7,7 +7,8 @@ import {
   VOTE_POST,
   EDIT_POST,
   GET_POST_DETAILS,
-  GET_COMMENTS
+  GET_COMMENTS,
+  ADD_COMMENT
 } from '../actions'
 
 function categories (state = [], action) {
@@ -49,15 +50,14 @@ function post (state = [], action) {
   }
 }
 
-function comments (state = {}, action) {
-  const { comments, parentId } = action
+function comments (state = [], action) {
+  const { comments, comment } = action
 
   switch (action.type) {
     case GET_COMMENTS:
-      return {
-        ...state,
-        [parentId]: comments
-      }
+      return Object.assign([], state, comments)
+    case ADD_COMMENT:
+      return state.concat(comment)
     default:
       return state
   }

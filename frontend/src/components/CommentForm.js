@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as API from '../utils/api';
+import { connect } from 'react-redux';
+import { addComment } from '../actions';
 
 class CommentForm extends Component {
 
@@ -23,7 +25,7 @@ class CommentForm extends Component {
       author: this.state.author,
       parentId: this.props.parentId
     }
-    API.addComment(comment).then(data => console.log(data));
+    API.addComment(comment).then(data => this.props.addComment(data));
   }
 
   render() {
@@ -66,4 +68,13 @@ class CommentForm extends Component {
   }
 }
 
-export default CommentForm;
+function mapDispatchToProps (dispatch) {
+  return {
+    addComment: (comment) => dispatch(addComment(comment)),
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(CommentForm)

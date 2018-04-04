@@ -19,7 +19,7 @@ class PostDetail extends Component {
       console.log(this.props.post)
     })
     API.getComments(this.props.id).then((data) => {
-      this.props.getComments(data, this.props.id);
+      this.props.getComments(data);
     })
   }
 
@@ -70,9 +70,9 @@ class PostDetail extends Component {
           +
         </button>
         <CommentForm parentId={this.props.id} />
-        {this.props.comments[this.props.id] ?
+        {this.props.comments ?
           <ul>
-            {this.props.comments[this.props.id].map((comment) => (
+            {this.props.comments.map((comment) => (
               <li key={comment.id}>
                 {comment.body}<br />
                 posted by {comment.author} on {toDate(comment.timestamp)}<br />
@@ -104,10 +104,10 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state, ownProps) {
   return {
     post: state.post,
-    comments: state.comments
+    comments: state.comments.filter((comment) => comment.parentId === ownProps.id)
   }
 }
 
@@ -115,7 +115,7 @@ function mapDispatchToProps (dispatch) {
   return {
     updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
     getPostDetails: (post) => dispatch(getPostDetails(post)),
-    getComments: (comments, parentId) => dispatch(getComments(comments, parentId)) 
+    getComments: (comments) => dispatch(getComments(comments)) 
   }
 }
 
