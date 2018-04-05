@@ -107,3 +107,11 @@ export const editComment = (id, timestamp, body) => {
     })
   }).then(data => data.json())
 }
+
+// Sets a comment's deleted flag to `true`
+export const deleteComment = (id) =>
+  fetch(`${url}/comments/${id}`, {
+    method: 'DELETE',
+    headers,
+    credentials: 'include'
+  }).then(res => console.log(res))

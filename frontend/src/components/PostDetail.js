@@ -59,6 +59,10 @@ class PostDetail extends Component {
     API.deletePost(this.props.post.id);
     this.props.history.push('/');
   }
+  
+  handleDeleteComment = (id) => {
+    API.deleteComment(id);
+  }
 
   render() {
 
@@ -98,6 +102,9 @@ class PostDetail extends Component {
                 votescore {comment.voteScore}
                 <button onClick={() => this.openEditCommentForm(comment.id)}>
                   Edit
+                </button>
+                <button onClick={() => this.handleDeleteComment(comment.id)}>
+                  Delete
                 </button>
                 <CommentForm
                   displayForm={this.state.editCommentFormOpen && (comment.id === this.state.commentId)}
