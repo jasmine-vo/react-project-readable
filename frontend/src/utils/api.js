@@ -88,3 +88,22 @@ export const addComment = (comment) => {
     body: JSON.stringify(comment)
   }).then(data => data.json())
 }
+
+// Get the details for a single comment
+export const getCommentDetails = (id) => {
+  return fetch(`${url}/comments/${id}`, { headers, credentials: 'include' })
+  .then(res => res.json())
+}
+
+// Edit the details of an existing comment
+export const editComment = (id, timestamp, body) => {
+  return fetch(`${url}/comments/${id}`, {
+    method: 'PUT',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify({
+      timestamp: timestamp,
+      body: body
+    })
+  }).then(data => data.json())
+}

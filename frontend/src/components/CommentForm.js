@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import * as API from '../utils/api';
 import { connect } from 'react-redux';
-import { addComment } from '../actions';
+import { addComment, editComment } from '../actions';
 
 class CommentForm extends Component {
 
   state = {
     body: '',
     author: '',
+  }
+
+  componentWillMount() {
+    if (this.props.editMode) {
+      API.getCommentDetails(this.props.commentId).then(data => 
+        this.setState({ body: data.body })
+      )
+    }
   }
 
   handleChange = (event) => {
@@ -17,19 +25,25 @@ class CommentForm extends Component {
   // update API with new comment 
   handleSubmit = (event) => {
     event.preventDefault();
-    const uuidv1 = require('uuid/v1')
-    const comment = {
-      id: uuidv1(),
-      timestamp: Date.now(),
-      body: this.state.body,
-      author: this.state.author,
-      parentId: this.props.parentId
+    if (this.props.editMode) {
+      API.editComment(this.props.commentId, Date.now(), this.state.body)
+        .then(data => this.props.editComment(data));
+      this.props.onCloseEditCommentForm();
+    } else {
+      const uuidv1 = require('uuid/v1')
+      const comment = {
+        id: uuidv1(),
+        timestamp: Date.now(),
+        body: this.state.body,
+        author: this.state.author,
+        parentId: this.props.parentId
+      }
+      API.addComment(comment).then(data => this.props.addComment(data));
+      this.setState({
+        body: '',
+        author: '',
+      })
     }
-    API.addComment(comment).then(data => this.props.addComment(data));
-    this.setState({
-      body: '',
-      author: '',
-    })
   }
 
   render() {
@@ -40,41 +54,65 @@ class CommentForm extends Component {
     */
 
     const enabled =
-      this.state.body.length > 0 &&
-      this.state.author.length > 0
+      this.props.editMode ||
+      (this.state.body.length > 0 &&
+      this.state.author.length > 0);
 
-    return (
-      <div>
-        <h4>Add Comment</h4>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Your Name:
-            <input
-              type="text"
-              name="author"
-              value={this.state.author}
-              onChange={this.handleChange}
-            />
-          </label><br />
-          <label>
-            Comment:
-            <input
-              type="text"
-              name="body"
-              value={this.state.body}
-              onChange={this.handleChange}
-            />
-          </label><br />
-          <input type="submit" value="Submit" disabled={!enabled}/>
-        </form>
-      </div>
-    )
+    if (this.props.displayForm && !(this.props.editMode)) {
+      return (
+        <div>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Your Name:
+              <input
+                type="text"
+                name="author"
+                value={this.state.author}
+                onChange={this.handleChange}
+              />
+            </label><br />            
+            <label>
+              Comment:
+              <input
+                type="text"
+                name="body"
+                value={this.state.body}
+                onChange={this.handleChange}
+              />
+            </label><br />
+            <input type="submit" value="Submit" disabled={!enabled}/>
+          </form>
+        </div>
+      )
+    } else if (this.props.displayForm && this.props.editMode) {
+      return (
+        <div>
+          <form onSubmit={this.handleSubmit}>           
+            <label>
+              Comment:
+              <input
+                type="text"
+                name="body"
+                value={this.state.body}
+                onChange={this.handleChange}
+              />
+            </label><br />
+            <input type="submit" value="Submit" disabled={!enabled}/>
+          </form>
+        </div>
+      )
+    } else {
+      return (
+        null
+      )
+    }
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     addComment: (comment) => dispatch(addComment(comment)),
+    editComment: (comment) => dispatch(editComment(comment)),
   }
 }
 

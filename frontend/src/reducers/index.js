@@ -8,7 +8,8 @@ import {
   EDIT_POST,
   GET_POST_DETAILS,
   GET_COMMENTS,
-  ADD_COMMENT
+  ADD_COMMENT,
+  EDIT_COMMENT
 } from '../actions'
 
 function categories (state = [], action) {
@@ -58,6 +59,8 @@ function comments (state = [], action) {
       return Object.assign([], state, comments)
     case ADD_COMMENT:
       return state.concat(comment)
+    case EDIT_COMMENT:
+      return state.map((c) => c.id === comment.id ? comment : c)
     default:
       return state
   }
@@ -67,5 +70,5 @@ export default combineReducers({
   categories,
   posts,
   post,
-  comments
+  comments,
 })

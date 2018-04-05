@@ -6,6 +6,7 @@ export const EDIT_POST = 'EDIT_POST'
 export const GET_POST_DETAILS = 'GET_POST_DETAILS'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
 
 export function getCategories (categories) {
   return {
@@ -60,5 +61,12 @@ export function addComment (comment) {
   return {
     type: ADD_COMMENT,
     comment,
+  }
+}
+
+export function editComment (comment) {
+  return {
+    type: EDIT_COMMENT,
+    comment
   }
 }

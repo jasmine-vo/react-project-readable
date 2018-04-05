@@ -11,12 +11,13 @@ import { withRouter } from 'react-router-dom'
 class PostDetail extends Component {
   state = {
     postModalOpen: false,
+    editCommentFormOpen: false,
+    commentId: '',
   }
 
   componentWillMount() {
     API.getPostDetails(this.props.id).then((data) => {
       this.props.getPostDetails(data);
-      console.log(this.props.post)
     })
     API.getComments(this.props.id).then((data) => {
       this.props.getComments(data);
@@ -32,6 +33,19 @@ class PostDetail extends Component {
   closePostModal = () => {
     this.setState(() => ({
       postModalOpen: false
+    }))
+  }
+
+  openEditCommentForm = (id) => {
+    this.setState(() => ({
+      editCommentFormOpen: true,
+      commentId: id,
+    }))
+  }
+
+  closeEditCommentForm = () => {
+    this.setState(() => ({
+      editCommentFormOpen: false
     }))
   }
 
@@ -69,7 +83,12 @@ class PostDetail extends Component {
         <button onClick={() => this.handleVote('upVote')}>
           +
         </button>
-        <CommentForm parentId={this.props.id} />
+        <h4>Add Comment</h4>
+        <CommentForm 
+          parentId={this.props.id}
+          displayForm={true}
+          editMode={false}
+        />
         {this.props.comments ?
           <ul>
             {this.props.comments.map((comment) => (
@@ -77,6 +96,15 @@ class PostDetail extends Component {
                 {comment.body}<br />
                 posted by {comment.author} on {toDate(comment.timestamp)}<br />
                 votescore {comment.voteScore}
+                <button onClick={() => this.openEditCommentForm(comment.id)}>
+                  Edit
+                </button>
+                <CommentForm
+                  displayForm={this.state.editCommentFormOpen && (comment.id === this.state.commentId)}
+                  editMode={true}
+                  commentId={comment.id}
+                  onCloseEditCommentForm={this.closeEditCommentForm}
+                />
               </li>
             ))}
           </ul>
@@ -115,7 +143,7 @@ function mapDispatchToProps (dispatch) {
   return {
     updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
     getPostDetails: (post) => dispatch(getPostDetails(post)),
-    getComments: (comments) => dispatch(getComments(comments)) 
+    getComments: (comments) => dispatch(getComments(comments)),
   }
 }
 
