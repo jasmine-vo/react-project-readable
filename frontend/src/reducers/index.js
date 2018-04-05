@@ -9,7 +9,8 @@ import {
   GET_POST_DETAILS,
   GET_COMMENTS,
   ADD_COMMENT,
-  EDIT_COMMENT
+  EDIT_COMMENT,
+  DELETE_COMMENT
 } from '../actions'
 
 function categories (state = [], action) {
@@ -52,7 +53,7 @@ function post (state = [], action) {
 }
 
 function comments (state = [], action) {
-  const { comments, comment } = action
+  const { comments, comment, commentId } = action
 
   switch (action.type) {
     case GET_COMMENTS:
@@ -61,6 +62,8 @@ function comments (state = [], action) {
       return state.concat(comment)
     case EDIT_COMMENT:
       return state.map((c) => c.id === comment.id ? comment : c)
+    case DELETE_COMMENT:
+      return state.filter((c) => c.id !== commentId)
     default:
       return state
   }

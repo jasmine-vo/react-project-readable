@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as API from '../utils/api';
 import { toDate } from '../utils/helpers';
 import { connect } from 'react-redux';
-import { updatePostScore, getPostDetails, getComments } from '../actions';
+import { updatePostScore, getPostDetails, getComments, deleteComment} from '../actions';
 import Modal from 'react-modal';
 import PostForm from './PostForm';
 import CommentForm from './CommentForm';
@@ -62,6 +62,7 @@ class PostDetail extends Component {
   
   handleDeleteComment = (id) => {
     API.deleteComment(id);
+    this.props.deleteComment(id);
   }
 
   render() {
@@ -151,6 +152,7 @@ function mapDispatchToProps (dispatch) {
     updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
     getPostDetails: (post) => dispatch(getPostDetails(post)),
     getComments: (comments) => dispatch(getComments(comments)),
+    deleteComment: (commentId) => dispatch(deleteComment(commentId)),
   }
 }
 
