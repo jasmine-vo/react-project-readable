@@ -10,7 +10,8 @@ import {
   GET_COMMENTS,
   ADD_COMMENT,
   EDIT_COMMENT,
-  DELETE_COMMENT
+  DELETE_COMMENT,
+  VOTE_COMMENT
 } from '../actions'
 
 function categories (state = [], action) {
@@ -64,6 +65,8 @@ function comments (state = [], action) {
       return state.map((c) => c.id === comment.id ? comment : c)
     case DELETE_COMMENT:
       return state.filter((c) => c.id !== commentId)
+    case VOTE_COMMENT:
+      return state.map((c) => c.id === comment.id ? comment : c)
     default:
       return state
   }

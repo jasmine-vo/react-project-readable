@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as API from '../utils/api';
 import { toDate } from '../utils/helpers';
 import { connect } from 'react-redux';
-import { updatePostScore, getPostDetails, getComments, deleteComment} from '../actions';
+import { updatePostScore, getPostDetails, getComments, deleteComment, updateCommentScore } from '../actions';
 import Modal from 'react-modal';
 import PostForm from './PostForm';
 import CommentForm from './CommentForm';
@@ -49,7 +49,7 @@ class PostDetail extends Component {
     }))
   }
 
-  handleVote = (vote) => {
+  handlePostVote = (vote) => {
     API.addPostVote(this.props.id, vote).then((data) => {
       this.props.updatePostScore(data);
     });
@@ -63,6 +63,12 @@ class PostDetail extends Component {
   handleDeleteComment = (id) => {
     API.deleteComment(id);
     this.props.deleteComment(id);
+  }
+
+  handleCommentVote = (vote, commentId) => {
+    API.addCommentVote(commentId, vote).then((data) => {
+      this.props.updateCommentScore(data);
+    });
   }
 
   render() {
@@ -82,10 +88,10 @@ class PostDetail extends Component {
           Delete Post
         </button>
         <p>vote score: {this.props.post.voteScore}</p>
-        <button onClick={() => this.handleVote('downVote')}>
+        <button onClick={() => this.handlePostVote('downVote')}>
           -
         </button>
-        <button onClick={() => this.handleVote('upVote')}>
+        <button onClick={() => this.handlePostVote('upVote')}>
           +
         </button>
         <h4>Add Comment</h4>
@@ -100,7 +106,13 @@ class PostDetail extends Component {
               <li key={comment.id}>
                 {comment.body}<br />
                 posted by {comment.author} on {toDate(comment.timestamp)}<br />
-                votescore {comment.voteScore}
+                <p>vote score: {comment.voteScore}</p>
+                <button onClick={() => this.handleCommentVote('downVote', comment.id)}>
+                  -
+                </button>
+                <button onClick={() => this.handleCommentVote('upVote', comment.id)}>
+                  +
+                </button>
                 <button onClick={() => this.openEditCommentForm(comment.id)}>
                   Edit
                 </button>
@@ -153,6 +165,7 @@ function mapDispatchToProps (dispatch) {
     getPostDetails: (post) => dispatch(getPostDetails(post)),
     getComments: (comments) => dispatch(getComments(comments)),
     deleteComment: (commentId) => dispatch(deleteComment(commentId)),
+    updateCommentScore: (comment, vote) => dispatch(updateCommentScore(comment, vote)),
   }
 }
 

@@ -8,6 +8,7 @@ export const GET_COMMENTS = 'GET_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
+export const VOTE_COMMENT = 'VOTE_COMMENT'
 
 export function getCategories (categories) {
   return {
@@ -76,5 +77,12 @@ export function deleteComment (commentId) {
   return {
     type: DELETE_COMMENT,
     commentId
+  }
+}
+
+export function updateCommentScore (comment) {
+  return {
+    type: VOTE_COMMENT,
+    comment,
   }
 }

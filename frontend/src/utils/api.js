@@ -115,3 +115,13 @@ export const deleteComment = (id) =>
     headers,
     credentials: 'include'
   }).then(res => console.log(res))
+
+// Vote on a comment
+export const addCommentVote = (id, vote) => {
+  return fetch(`${url}/comments/${id}`, {
+    method: 'POST',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify({ option: vote })
+  }).then(data => data.json())
+}
