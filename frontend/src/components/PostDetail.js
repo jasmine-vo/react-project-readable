@@ -101,34 +101,36 @@ class PostDetail extends Component {
           editMode={false}
         />
         {this.props.comments ?
-          <ul>
-            {this.props.comments.map((comment) => (
-              <li key={comment.id}>
-                {comment.body}<br />
-                posted by {comment.author} on {toDate(comment.timestamp)}<br />
-                <p>vote score: {comment.voteScore}</p>
-                <button onClick={() => this.handleCommentVote('downVote', comment.id)}>
-                  -
-                </button>
-                <button onClick={() => this.handleCommentVote('upVote', comment.id)}>
-                  +
-                </button>
-                <button onClick={() => this.openEditCommentForm(comment.id)}>
-                  Edit
-                </button>
-                <button onClick={() => this.handleDeleteComment(comment.id)}>
-                  Delete
-                </button>
-                <CommentForm
-                  displayForm={this.state.editCommentFormOpen && (comment.id === this.state.commentId)}
-                  editMode={true}
-                  commentId={comment.id}
-                  onCloseEditCommentForm={this.closeEditCommentForm}
-                />
-              </li>
-            ))}
-          </ul>
-        : `No Comments`}
+          <div>There are {this.props.comments.length} comments about this post
+            <ul>
+              {this.props.comments.map((comment) => (
+                <li key={comment.id}>
+                  {comment.body}<br />
+                  posted by {comment.author} on {toDate(comment.timestamp)}<br />
+                  <p>vote score: {comment.voteScore}</p>
+                  <button onClick={() => this.handleCommentVote('downVote', comment.id)}>
+                    -
+                  </button>
+                  <button onClick={() => this.handleCommentVote('upVote', comment.id)}>
+                    +
+                  </button>
+                  <button onClick={() => this.openEditCommentForm(comment.id)}>
+                    Edit
+                  </button>
+                  <button onClick={() => this.handleDeleteComment(comment.id)}>
+                    Delete
+                  </button>
+                  <CommentForm
+                    displayForm={this.state.editCommentFormOpen && (comment.id === this.state.commentId)}
+                    editMode={true}
+                    commentId={comment.id}
+                    onCloseEditCommentForm={this.closeEditCommentForm}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        : `There are 0 comments about this post`}
         <Modal
           className='modal'
           overlayClassName='overlay'
