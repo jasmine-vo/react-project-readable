@@ -11,7 +11,8 @@ import {
   ADD_COMMENT,
   EDIT_COMMENT,
   DELETE_COMMENT,
-  VOTE_COMMENT
+  VOTE_COMMENT,
+  UPDATE_POST_SORT
 } from '../actions'
 
 function categories (state = [], action) {
@@ -72,9 +73,20 @@ function comments (state = [], action) {
   }
 }
 
+function sort (state = {method: '-timestamp'}, action) {
+  const { sort } = action
+
+  switch (action.type) {
+    case UPDATE_POST_SORT:
+      return Object.assign({}, state, {method: sort})
+    default:
+      return state
+  }
+}
 export default combineReducers({
   categories,
   posts,
   post,
   comments,
+  sort
 })

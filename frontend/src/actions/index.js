@@ -9,6 +9,7 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
+export const UPDATE_POST_SORT = 'UPDATE_POST_SORT'
 
 export function getCategories (categories) {
   return {
@@ -84,5 +85,12 @@ export function updateCommentScore (comment) {
   return {
     type: VOTE_COMMENT,
     comment,
+  }
+}
+
+export function updatePostSort (sort) {
+  return {
+    type: UPDATE_POST_SORT,
+    sort
   }
 }
