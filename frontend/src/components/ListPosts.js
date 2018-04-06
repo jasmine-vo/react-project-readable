@@ -65,7 +65,7 @@ class ListPosts extends Component {
         <button onClick={() => this.openPostModal()}>
           Add Post
         </button>
-        {this.props.posts ?
+        {(this.props.posts.length > 0) ?
         <ul>
           {this.props.posts.map((post) => (
             <li key={post.id}>
@@ -75,7 +75,7 @@ class ListPosts extends Component {
             </li>
           ))}
         </ul>
-        : `No Posts`}
+        : <div>No posts yet...</div>}
         <Modal
           className='modal'
           overlayClassName='overlay'
