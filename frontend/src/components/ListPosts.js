@@ -7,6 +7,9 @@ import * as API from '../utils/api';
 import sortBy from 'sort-by';
 import { connect } from 'react-redux';
 import { getPosts, getCategories, updatePostSort } from '../actions';
+import RedHeartIcon from '../icons/favorite.svg';
+import GreyHeartIcon from '../icons/favorite-grey.svg';
+import PostIcon from '../icons/post.svg';
 
 class ListPosts extends Component {
 
@@ -14,11 +17,9 @@ class ListPosts extends Component {
     postModalOpen: false,
   }
 
-  // load categories and posts from API after component is mounted
   componentDidMount() {
     API.getCategories().then(data => this.props.getCategories(data));
-    API.getPosts().then(data => this.props.getPosts(data.sort(sortBy(this.props.sort.method))));
-    console.log(this.props.sort)
+    API.getPosts().then(data => this.props.getPosts(data));
   }
 
   sortPosts = (sortValue) => {
@@ -40,59 +41,107 @@ class ListPosts extends Component {
 
   render() {
 
+    const { categories, sort, posts, category } = this.props
+    const { postModalOpen } = this.state
+
+    console.log(posts)
+
     return (
       <div>
-        <button>
-          <Link
-            to="/"
-          >All</Link>
-        </button>
-        {this.props.categories.map((category) => (
-          <button key={category}>
-            <Link
-              to={`/${category}`}
-            >{category}</Link>
-          </button>
-        ))}
-        <select value={this.props.sort.method}
-          onChange={(event) => this.sortPosts(event.target.value)}>
-            <option value="timestamp">Oldest to newest</option>
-            <option value="-timestamp">Newest to oldest</option>
-            <option value="voteScore">Lowest to highest score</option>
-            <option value="-voteScore">Highest to lowest score</option>
-        </select>
 
-        <button onClick={() => this.openPostModal()}>
-          Add Post
-        </button>
-        {(this.props.posts.length > 0) ?
-        <ul>
-          {this.props.posts.map((post) => (
-            <li key={post.id}>
-              <Link
-                to={`/${post.category}/${post.id}`}
-                >{post.title}</Link>, score: {post.voteScore} - posted on {toDate(post.timestamp)}
-            </li>
+        <div className='category-tabs'>
+          
+          <button
+            className={(category) ? 'category' : 'active-category'}>
+            <Link
+              to='/'
+              className='link'
+            >all topics</Link>
+          </button>
+
+          {categories.map((cat) => (
+            <button 
+              key={cat}
+              className={(category === cat) ? 'active-category' : 'category'}>
+                <Link
+                  to={`/${cat}`}
+                  className='link'
+                >{cat}</Link>
+            </button>
           ))}
-        </ul>
-        : <div>No posts yet...</div>}
+        
+        </div>
+
+        <div className='post-list'>
+
+          <div className='change-sort'>
+            <label><span>sort by: </span></label>
+            <select
+              value={sort.method}
+              className='sort'
+              onChange={(event) => this.sortPosts(event.target.value)}>
+                <option value="timestamp">oldest to newest</option>
+                <option value="-timestamp">newest to oldest</option>
+                <option value="voteScore">lowest to highest score</option>
+                <option value="-voteScore">highest to lowest score</option>
+            </select>
+          </div>
+          <div className='add-new-post'>
+            <button 
+              onClick={() => this.openPostModal()}
+              className='add-post'>
+                add post <img className='icon' src={PostIcon} alt='post-icon' />
+            </button>
+          </div>
+
+          {(posts.length > 0) ?
+            <div>
+              {posts.map((post) => (
+                <ul className='posts' key={post.id}>
+                  <li>
+                    <div className='post-summary'>
+                      <Link
+                        to={`/${post.category}/${post.id}`}
+                        className='link'>
+                        <h3 className='subtitle'>{post.title}</h3>
+                        <span>
+                          by {post.author} about {post.category} on {toDate(post.timestamp)}
+                        </span>
+                      </Link>
+                    </div>
+                    <div className='post-score'>
+                      {(post.voteScore > 0) ?
+                        <img className='icon' src={RedHeartIcon} alt='red-heart-icon' />
+                      : <img className='icon' src={GreyHeartIcon} alt='grey-heart-icon' />}
+                      <span> {post.voteScore}</span>
+                    </div>
+                  </li>
+                </ul>
+              ))}
+            </div>
+          : <div className='post-list'>There aren't any posts yet...</div>}
+        </div>
+
         <Modal
           className='modal'
           overlayClassName='overlay'
-          isOpen={this.state.postModalOpen}
+          isOpen={postModalOpen}
           onRequestClose={this.closePostModal}
           contentLabel='Modal'
         >
-          <div>
-            <h3>New Post</h3>
+          <div className='new-post-container'>
+            <h3 className='subtitle'>New Post</h3>
             <PostForm
               onClosePostModal={this.closePostModal}
             />
-            <button onClick={() => this.closePostModal()}>
-              Cancel
+            <button 
+              className='cancel'
+              onClick={() => this.closePostModal()}>
+                Cancel
             </button>
           </div>
         </Modal>
+
       </div>
     )
   }
@@ -101,13 +150,17 @@ class ListPosts extends Component {
 function mapStateToProps (state, ownProps) {
   if (ownProps.category) {
     return {
-      posts: state.posts.filter((post) => post.category === ownProps.category && !(post.deleted)).sort(sortBy(state.sort.method)),
+      posts: state.posts
+        .filter((post) => post.category === ownProps.category && !(post.deleted))
+        .sort(sortBy(state.sort.method)),
       categories: state.categories,
       sort: state.sort,
     }
   } else {
     return {
-      posts: state.posts.filter((post) => !(post.deleted)).sort(sortBy(state.sort.method)),
+      posts: state.posts
+        .filter((post) => !(post.deleted))
+        .sort(sortBy(state.sort.method)),
       categories: state.categories,
       sort: state.sort,
     }

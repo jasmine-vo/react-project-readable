@@ -1,5 +1,163 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1070px;
+  min-width: 500px;
+}
+
+.title-bar {
+  padding-left: 5px;
+}
+
+.logo {
+  width: 50%;
+  display: inline-block;
+}
+
+.chat-icon {
+  height: 40px;
+  display: inline-block;
+  margin: 0;
+  padding-right: 5px;
+}
+
+.title {
+  color: #FB4742;
+  font-size: 30px;
+  font-family: 'Quicksand', sans-serif;
+  display: inline-block;
+  margin: 0;
+  vertical-align: top;
+}
+
+.add-new-post {
+  display: inline-block;
+  width: 25%;
+}
+
+.add-post {
+  border: 0px;
+  font-size: 14px;
+  color: #FB4742;
+  height: 27px;
+}
+
+.icon {
+  height: 12px;
+}
+
+.category-tabs {
+  text-align: center;
+  margin: 25px;
+}
+
+.category {
+  display: inline-block;
+  width: 90px;
+  height: 40px;
+  background-color: #FFF;
+  border: 0px;
+}
+
+.active-category {
+  display: inline-block;
+  width: 90px;
+  height: 40px;
+  background-color: #FFF;
+  border-bottom: 2px solid #F87370;
+}
+
+.category:hover {
+  background-color: #EFEFEF;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.post-list {
+  margin: auto;
+  width: 75%;
+}
+
+.change-sort {
+  display: inline-block;
+  text-align: left;
+  width: 75%;
+}
+
+.sort {
+  background-color: #FFF;
+  border: 0px;
+  font-size: 14px;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  padding: 5px;
+  color: #FB4742;
+}
+
+.posts {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+  line-height: 1.5px;
+}
+
+.post-summary {
+  width: 75%;
+  display: inline-block;
+}
+
+.post-score {
+  width: 25%;
+  display: inline-block;
+}
+
+span {
+  font-size: 14px;
+}
+
+.page-footer {
+  font-size: 10px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.subtitle {
+  color: #FB4742;
+  font-family: 'Roboto Slab', serif;
+  font-size: 16px;
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal {
+  position: absolute;
+  top: 40px;
+  left: 200px;
+  right: 200px;
+  bottom: 40px;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
+  min-width: 500px;
 }
