@@ -135,7 +135,7 @@ class ListPosts extends Component {
               onClosePostModal={this.closePostModal}
             />
             <button 
-              className='cancel'
+              className='cancel-button'
               onClick={() => this.closePostModal()}>
                 Cancel
             </button>

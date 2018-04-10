@@ -25,7 +25,6 @@ class PostForm extends Component {
     this.setState({[event.target.name]: event.target.value});
   }
 
-  // update API with new post, 
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.props.post) {
@@ -48,62 +47,81 @@ class PostForm extends Component {
 
   render() {
 
+    const { title, author, body } = this.state
+    const { post, category, categories } = this.props
+
     /* 
     Reference for Enable/Disable Submit Button
     https://goshakkk.name/form-recipe-disable-submit-button-react/ 
     */
 
     const enabled =
-      this.props.post ||
-      (this.state.title.length > 0 &&
-      this.state.body.length > 0 &&
-      this.state.author.length > 0);
+      post ||
+      (title.length > 0 &&
+      body.length > 0 &&
+      author.length > 0);
 
     return (
-      <div>
+      <div className='post-form'>
+
         <form onSubmit={this.handleSubmit}>
           <label>
-            Title:
+            Title<br />
             <input
-              type="text"
-              name="title"
-              value={this.state.title}
+              type='text'
+              name='title'
+              value={title}
               onChange={this.handleChange}
+              maxLength='60'
+              className='form-field-sml'
             />
-          </label><br />
+          </label>
+          <br />
           <label>
-            Author:
+            Name<br />
             <input
-              type="text"
-              name="author"
-              value={this.props.post ? this.props.post.author : this.state.author}
+              type='text'
+              name='author'
+              value={post ? post.author : author}
               onChange={this.handleChange}
-              disabled={this.props.post ? true : false}
+              disabled={post ? true : false}
+              maxLength='20'
+              className='form-field-sml'
             />
-          </label><br />
+          </label>
+          <br />
           <label>
-            Category:
+            Category 
             <select
-              defaultValue={this.props.post ? this.props.category : `react`}
-              name="category"
+              defaultValue={post ? category : `react`}
+              name='category'
               onChange={this.handleChange}
-              disabled={this.props.post ? true : false}>
-                {this.props.categories.map((category, index) => (
+              disabled={post ? true : false}>
+                {categories.map((category, index) => (
                   <option value={category} key={index}>{category}</option>
                   ))
                 }
-            </select><br />
+            </select>
           </label>
+          <br />
           <label>
-            Body:
-            <input
-              type="text"
-              name="body"
+            Body<br />
+            <textarea
+              type='text'
+              name='body'
               value={this.state.body}
               onChange={this.handleChange}
+              className='form-field-lrg'
+              autoComplete='off'
             />
-          </label><br />
-          <input type="submit" value="Submit" disabled={!enabled}/>
+          </label>
+
+          <input
+            type='submit'
+            value='Submit'
+            disabled={!enabled}
+            className='form-submit-button'
+          />
         </form>
       </div>
     )

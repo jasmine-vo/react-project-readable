@@ -94,7 +94,7 @@ body {
   width: 75%;
 }
 
-.sort {
+select {
   background-color: #FFF;
   border: 0px;
   font-size: 14px;
@@ -140,11 +140,6 @@ span {
   font-size: 16px;
 }
 
-.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .modal {
   position: absolute;
   top: 40px;
@@ -160,4 +155,29 @@ span {
   border-radius: 3px;
   box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
   min-width: 500px;
+}
+
+.form-field-sml {
+  width: 50%;
+}
+
+.form-field-lrg {
+  width: 100%;
+  height: 200px;
+}
+
+.form-submit-button {
+  width: 100%;
+  background-color: #F87370;
+  color: #FFF;
+}
+
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  width: 100%;
+  background-color: #EFEFEF;
 }
