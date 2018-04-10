@@ -108,7 +108,7 @@ select {
   list-style-type: none;
   margin: 0;
   padding: 10px;
-  line-height: 1.5px;
+  line-height: 10px;
 }
 
 .post-summary {
@@ -123,6 +123,10 @@ select {
 
 span {
   font-size: 14px;
+}
+
+.post-details {
+  color: #848484;
 }
 
 .page-footer {

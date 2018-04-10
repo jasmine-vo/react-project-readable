@@ -80,10 +80,10 @@ class ListPosts extends Component {
               value={sort.method}
               className='sort'
               onChange={(event) => this.sortPosts(event.target.value)}>
-                <option value="timestamp">oldest to newest</option>
-                <option value="-timestamp">newest to oldest</option>
-                <option value="voteScore">lowest to highest score</option>
-                <option value="-voteScore">highest to lowest score</option>
+                <option value='timestamp'>oldest to newest</option>
+                <option value='-timestamp'>newest to oldest</option>
+                <option value='voteScore'>lowest to highest score</option>
+                <option value='-voteScore'>highest to lowest score</option>
             </select>
           </div>
           <div className='add-new-post'>
@@ -104,11 +104,15 @@ class ListPosts extends Component {
                         to={`/${post.category}/${post.id}`}
                         className='link'>
                         <h3 className='subtitle'>{post.title}</h3>
-                        <span>
+                        <span className='post-body-snip'>
+                          {post.body.slice(0,35)}...
+                        </span><p />
+                        <span className='post-details'>
                           by {post.author} about {post.category} on {toDate(post.timestamp)}
                         </span>
                       </Link>
                     </div>
+
                     <div className='post-score'>
                       {(post.voteScore > 0) ?
                         <img className='icon' src={RedHeartIcon} alt='red-heart-icon' />
