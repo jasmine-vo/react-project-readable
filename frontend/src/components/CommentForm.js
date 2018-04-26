@@ -22,7 +22,6 @@ class CommentForm extends Component {
     this.setState({[event.target.name]: event.target.value});
   }
 
-  // update API with new comment 
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.props.editMode) {
@@ -48,56 +47,76 @@ class CommentForm extends Component {
 
   render() {
 
+    const { editMode, displayForm } = this.props
+    const { body, author } = this.state
+
     /* 
     Reference for Enable/Disable Submit Button
     https://goshakkk.name/form-recipe-disable-submit-button-react/ 
     */
 
     const enabled =
-      this.props.editMode ||
-      (this.state.body.length > 0 &&
-      this.state.author.length > 0);
+      editMode ||
+      (body.length > 0 &&
+      author.length > 0);
 
-    if (this.props.displayForm && !(this.props.editMode)) {
+    if (displayForm && !(editMode)) {
       return (
-        <div>
+        <div className='comment-form'>
+
           <form onSubmit={this.handleSubmit}>
             <label>
-              Your Name:
+              Name<br />
               <input
-                type="text"
-                name="author"
-                value={this.state.author}
+                type='text'
+                name='author'
+                value={author}
                 onChange={this.handleChange}
+                className='form-field-sml'
               />
-            </label><br />            
+            </label>
+            <br />
             <label>
-              Comment:
-              <input
-                type="text"
-                name="body"
-                value={this.state.body}
+              Comment<br />
+              <textarea
+                type='text'
+                name='body'
+                value={body}
                 onChange={this.handleChange}
+                className='form-field-med'
               />
-            </label><br />
-            <input type="submit" value="Submit" disabled={!enabled}/>
+            </label>
+
+            <input
+              type='submit'
+              value='Submit'
+              disabled={!enabled}
+              className='comment-form-submit-button'
+            />
+
           </form>
         </div>
       )
-    } else if (this.props.displayForm && this.props.editMode) {
+    } else if (displayForm && editMode) {
       return (
-        <div>
-          <form onSubmit={this.handleSubmit}>           
-            <label>
-              Comment:
-              <input
-                type="text"
-                name="body"
-                value={this.state.body}
-                onChange={this.handleChange}
-              />
-            </label><br />
-            <input type="submit" value="Submit" disabled={!enabled}/>
+        <div className='comment-form'>
+
+          <form onSubmit={this.handleSubmit}>
+            <textarea
+              type='text'
+              name='body'
+              value={this.state.body}
+              onChange={this.handleChange}
+              className='form-field-med'
+            />
+
+            <input
+              type='submit'
+              value='Submit'
+              disabled={!enabled}
+              className='comment-form-submit-button'
+            />
+
           </form>
         </div>
       )

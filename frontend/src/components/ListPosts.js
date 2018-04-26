@@ -49,10 +49,10 @@ class ListPosts extends Component {
     return (
       <div>
 
-        <div className='category-tabs'>
+        <div className='nav'>
           
           <button
-            className={(category) ? 'category' : 'active-category'}>
+            className={(category) ? 'nav-button' : 'active-nav-button'}>
             <Link
               to='/'
               className='link'
@@ -62,7 +62,7 @@ class ListPosts extends Component {
           {categories.map((cat) => (
             <button 
               key={cat}
-              className={(category === cat) ? 'active-category' : 'category'}>
+              className={(category === cat) ? 'active-nav-button' : 'nav-button'}>
                 <Link
                   to={`/${cat}`}
                   className='link'
@@ -113,7 +113,7 @@ class ListPosts extends Component {
                       </Link>
                     </div>
 
-                    <div className='post-score'>
+                    <div className='vote-score'>
                       {(post.voteScore > 0) ?
                         <img className='icon' src={RedHeartIcon} alt='red-heart-icon' />
                       : <img className='icon' src={GreyHeartIcon} alt='grey-heart-icon' />}
