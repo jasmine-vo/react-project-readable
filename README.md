@@ -11,6 +11,6 @@ This project was bootstrapped with Create React App..
 To get this project up and running on your machine:
 - clone the project with `git clone https://github.com/jasmine-vo/react-project-readable.git`
 - `cd api-server`, then `npm install`
-- start the server with `node server`
+- start the server with `node server.js`
 - in another terminal window, cd `frontend` and install with `npm install`
 - start with `npm start`
