@@ -1,4 +1,4 @@
-const url = `${process.env.REACT_APP_BACKEND}`;
+const url = 'http://localhost:3001'
 
 let token = localStorage.token
 if (!token)
@@ -12,20 +12,20 @@ const headers = {
 
 // Get all of the categories available for the app
 export const getCategories = () =>  {
-  return fetch(`${url}/categories`, { headers, credentials: 'include' })
+  return fetch(`${url}/categories`, { headers })
     .then(res => res.json())
     .then(({ categories }) => categories.map(({ name }) => name))
 }
 
 // Get all of the posts
 export const getPosts = () => {
-  return fetch(`${url}/posts`, { headers, credentials: 'include' })
+  return fetch(`${url}/posts`, { headers })
     .then(res => res.json())
 }
 
 // Get the details of a single post
 export const getPostDetails = (id) => {
-  return fetch(`${url}/posts/${id}`, { headers, credentials: 'include' })
+  return fetch(`${url}/posts/${id}`, { headers })
 	.then(res => res.json())
 }
 
@@ -34,7 +34,6 @@ export const addNewPost = (post) => {
   return fetch(`${url}/posts`, {
     method: 'POST',
     headers,
-    credentials: 'include',
     body: JSON.stringify(post)
   }).then(data => data.json())
 }
@@ -44,7 +43,6 @@ export const addPostVote = (id, vote) => {
   return fetch(`${url}/posts/${id}`, {
     method: 'POST',
     headers,
-    credentials: 'include',
     body: JSON.stringify({ option: vote })
   }).then(data => data.json())
 }
@@ -54,7 +52,6 @@ export const editPost = (id, title, body) => {
   return fetch(`${url}/posts/${id}`, {
     method: 'PUT',
     headers,
-    credentials: 'include',
     body: JSON.stringify({
       title: title,
       body: body
@@ -68,14 +65,12 @@ export const deletePost = (id) =>
   fetch(`${url}/posts/${id}`, {
     method: 'DELETE',
     headers,
-    credentials: 'include'
   }).then(res => console.log(res))
 
 // Get all the comments for a signle post
 export const getComments = (id) => {
   return fetch (`${url}/posts/${id}/comments`, {
     headers,
-    credentials: 'include'
   }).then(data => data.json())
 }
 
@@ -84,14 +79,13 @@ export const addComment = (comment) => {
   return fetch(`${url}/comments`, {
     method: 'POST',
     headers,
-    credentials: 'include',
     body: JSON.stringify(comment)
   }).then(data => data.json())
 }
 
 // Get the details for a single comment
 export const getCommentDetails = (id) => {
-  return fetch(`${url}/comments/${id}`, { headers, credentials: 'include' })
+  return fetch(`${url}/comments/${id}`, { headers })
   .then(res => res.json())
 }
 
@@ -100,7 +94,6 @@ export const editComment = (id, timestamp, body) => {
   return fetch(`${url}/comments/${id}`, {
     method: 'PUT',
     headers,
-    credentials: 'include',
     body: JSON.stringify({
       timestamp: timestamp,
       body: body
@@ -113,7 +106,6 @@ export const deleteComment = (id) =>
   fetch(`${url}/comments/${id}`, {
     method: 'DELETE',
     headers,
-    credentials: 'include'
   }).then(res => console.log(res))
 
 // Vote on a comment
@@ -121,7 +113,6 @@ export const addCommentVote = (id, vote) => {
   return fetch(`${url}/comments/${id}`, {
     method: 'POST',
     headers,
-    credentials: 'include',
     body: JSON.stringify({ option: vote })
   }).then(data => data.json())
 }
