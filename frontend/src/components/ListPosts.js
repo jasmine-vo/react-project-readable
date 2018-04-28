@@ -44,8 +44,6 @@ class ListPosts extends Component {
     const { categories, sort, posts, category } = this.props
     const { postModalOpen } = this.state
 
-    console.log(posts)
-
     return (
       <div>
 
