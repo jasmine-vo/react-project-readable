@@ -7,7 +7,8 @@ import {
   getPostDetails,
   getComments,
   deleteComment,
-  updateCommentScore
+  updateCommentScore,
+  deletePost,
 } from '../actions';
 import Modal from 'react-modal';
 import PostForm from './PostForm';
@@ -68,6 +69,8 @@ class PostDetail extends Component {
 
   handleDeletePost = () => {
     API.deletePost(this.props.post.id);
+    this.props.deletePost(this.props.post.id);
+
     this.props.history.push('/');
   }
   
@@ -263,6 +266,7 @@ function mapDispatchToProps (dispatch) {
     getComments: (comments) => dispatch(getComments(comments)),
     deleteComment: (commentId) => dispatch(deleteComment(commentId)),
     updateCommentScore: (comment, vote) => dispatch(updateCommentScore(comment, vote)),
+    deletePost: (postId) => dispatch(deletePost(postId)),
   }
 }
 
