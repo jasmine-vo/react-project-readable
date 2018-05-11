@@ -44,6 +44,13 @@ function posts (state = [], action) {
       })
     case DELETE_POST:
       return state.filter((p) => p.id !== postId)
+    case EDIT_POST:
+      return state.map(p => {
+        if (p.id === post.id) {
+          p = post
+        }
+      return p
+      })
     default:
       return state
   }

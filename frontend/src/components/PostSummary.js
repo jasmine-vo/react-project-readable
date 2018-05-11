@@ -8,8 +8,14 @@ import RedHeartIcon from '../icons/favorite.svg';
 import GreyHeartIcon from '../icons/favorite-grey.svg';
 import CommentIcon from '../icons/comment.svg';
 import DeleteIcon from '../icons/garbage.svg';
+import PencilIcon from '../icons/pencil.svg';
+import Modal from 'react-modal';
+import PostForm from './PostForm';
 
 class PostSummary extends Component {
+  state = {
+    postModalOpen: false,
+  }
 
   componentDidMount() {
     const { post } = this.props
@@ -32,8 +38,21 @@ class PostSummary extends Component {
     this.props.deletePost(post.id);
   }
 
+  openPostModal = () => {
+    this.setState(() => ({
+      postModalOpen: true
+    })) 
+  }
+
+  closePostModal = () => {
+    this.setState(() => ({
+      postModalOpen: false
+    }))
+  }
+
   render() {
     const { post, comments } = this.props
+    const { postModalOpen } = this.state
 
     return (
       <div>
@@ -54,6 +73,11 @@ class PostSummary extends Component {
             </div>
 
             <div className='edit-delete'>
+              <button
+                onClick={() => this.openPostModal()}
+                className='small-button'>
+                <img className='icon' src={PencilIcon} alt='pencil-icon' />
+              </button>
               <button
                 onClick={() => this.handleDeletePost()}
                 className='small-button'>
@@ -82,6 +106,26 @@ class PostSummary extends Component {
             </div>
           </li>
         </ul>
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={postModalOpen}
+          onRequestClose={this.closePostModal}
+          contentLabel='Modal'
+        >
+          <div>
+            <PostForm
+              onClosePostModal={this.closePostModal}
+              post={post}
+              category={post.category}
+            />
+            <button
+              onClick={() => this.closePostModal()}
+              className='cancel-button'>
+                Cancel
+            </button>
+          </div>
+        </Modal>
       </div>
     )
   }

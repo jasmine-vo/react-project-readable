@@ -232,7 +232,6 @@ class PostDetail extends Component {
           contentLabel='Modal'
         >
           <div>
-            <h3>Edit Post</h3>
             <PostForm
               onClosePostModal={this.closePostModal}
               post={post}

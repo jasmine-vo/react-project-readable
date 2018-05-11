@@ -63,6 +63,7 @@ class PostForm extends Component {
 
     return (
       <div className='post-form'>
+        <h3>{post ? 'Edit Post' : 'New Post'}</h3>
 
         <form onSubmit={this.handleSubmit}>
           <label>

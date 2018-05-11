@@ -107,6 +107,7 @@ class ListPosts extends Component {
                 <PostSummary
                   post={post}
                   key={post.id}
+                  onOpenPostModal={this.openPostModal}
                 />
               ))}
             </div>
@@ -120,8 +121,7 @@ class ListPosts extends Component {
           onRequestClose={this.closePostModal}
           contentLabel='Modal'
         >
-          <div className='new-post-container'>
-            <h3 className='subtitle'>New Post</h3>
+          <div>
             <PostForm
               onClosePostModal={this.closePostModal}
             />
