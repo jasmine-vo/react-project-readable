@@ -12,7 +12,8 @@ import {
   EDIT_COMMENT,
   DELETE_COMMENT,
   VOTE_COMMENT,
-  UPDATE_POST_SORT
+  UPDATE_POST_SORT,
+  DELETE_POST,
 } from '../actions'
 
 function categories (state = [], action) {
@@ -27,7 +28,7 @@ function categories (state = [], action) {
 }
 
 function posts (state = [], action) {
-  const { post, posts } = action
+  const { post, posts, postId } = action
 
   switch (action.type) {
     case GET_POSTS:
@@ -41,6 +42,8 @@ function posts (state = [], action) {
         }
       return p
       })
+    case DELETE_POST:
+      return state.filter((p) => p.id !== postId)
     default:
       return state
   }

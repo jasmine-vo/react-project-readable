@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { toDate } from '../utils/helpers';
 import * as API from '../utils/api';
 import { connect } from 'react-redux';
-import { getComments, updatePostScore } from '../actions';
+import { getComments, updatePostScore, deletePost } from '../actions';
 import RedHeartIcon from '../icons/favorite.svg';
 import GreyHeartIcon from '../icons/favorite-grey.svg';
 import CommentIcon from '../icons/comment.svg';
+import DeleteIcon from '../icons/garbage.svg';
 
 class PostSummary extends Component {
 
@@ -22,6 +23,13 @@ class PostSummary extends Component {
     API.addPostVote(post.id, vote).then((data) => {
       this.props.updatePostScore(data);
     });
+  }
+
+  handleDeletePost = () => {
+    const { post } = this.props
+
+    API.deletePost(post.id);
+    this.props.deletePost(post.id);
   }
 
   render() {
@@ -43,6 +51,14 @@ class PostSummary extends Component {
                   by {post.author} about {post.category} on {toDate(post.timestamp)}
                 </span>
               </Link>
+            </div>
+
+            <div className='edit-delete'>
+              <button
+                onClick={() => this.handleDeletePost()}
+                className='small-button'>
+                <img className='icon' src={DeleteIcon} alt='delete-icon' />
+              </button>
             </div>
 
             <div className='vote-score'>
@@ -80,6 +96,7 @@ function mapDispatchToProps (dispatch) {
   return {
     updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
     getComments: (comments) => dispatch(getComments(comments)),
+    deletePost: (postId) => dispatch(deletePost(postId)),
   }
 }
 

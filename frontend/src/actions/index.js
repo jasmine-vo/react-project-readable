@@ -10,6 +10,7 @@ export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
 export const UPDATE_POST_SORT = 'UPDATE_POST_SORT'
+export const DELETE_POST = 'DELETE_POST'
 
 export function getCategories (categories) {
   return {
@@ -92,5 +93,12 @@ export function updatePostSort (sort) {
   return {
     type: UPDATE_POST_SORT,
     sort
+  }
+}
+
+export function deletePost (postId) {
+  return {
+    type: DELETE_POST,
+    postId
   }
 }
