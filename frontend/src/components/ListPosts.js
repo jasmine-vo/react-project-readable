@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { toDate } from '../utils/helpers';
 import Modal from 'react-modal';
 import PostForm from './PostForm';
+import PostSummary from './PostSummary';
 import * as API from '../utils/api';
 import sortBy from 'sort-by';
 import { connect } from 'react-redux';
-import { getPosts, getCategories, updatePostSort } from '../actions';
-import RedHeartIcon from '../icons/favorite.svg';
-import GreyHeartIcon from '../icons/favorite-grey.svg';
+import {
+  getPosts,
+  getCategories,
+  updatePostSort,
+  updatePostScore
+} from '../actions';
 import PostIcon from '../icons/post.svg';
 
 class ListPosts extends Component {
@@ -37,6 +40,12 @@ class ListPosts extends Component {
     this.setState(() => ({
       postModalOpen: false
     }))
+  }
+
+  handlePostVote = (postId, vote) => {
+    API.addPostVote(postId, vote).then((data) => {
+      this.props.updatePostScore(data);
+    });
   }
 
   render() {
@@ -95,30 +104,10 @@ class ListPosts extends Component {
           {(posts.length > 0) ?
             <div>
               {posts.map((post) => (
-                <ul className='posts' key={post.id}>
-                  <li>
-                    <div className='post-summary'>
-                      <Link
-                        to={`/${post.category}/${post.id}`}
-                        className='link'>
-                        <h3 className='subtitle'>{post.title}</h3>
-                        <span className='post-body-snip'>
-                          {post.body.slice(0,35)}...
-                        </span><p />
-                        <span className='post-details'>
-                          by {post.author} about {post.category} on {toDate(post.timestamp)}
-                        </span>
-                      </Link>
-                    </div>
-
-                    <div className='vote-score'>
-                      {(post.voteScore > 0) ?
-                        <img className='icon' src={RedHeartIcon} alt='red-heart-icon' />
-                      : <img className='icon' src={GreyHeartIcon} alt='grey-heart-icon' />}
-                      <span> {post.voteScore}</span>
-                    </div>
-                  </li>
-                </ul>
+                <PostSummary
+                  post={post}
+                  key={post.id}
+                />
               ))}
             </div>
           : <div className='post-list'>There aren't any posts yet...</div>}
@@ -174,6 +163,7 @@ function mapDispatchToProps (dispatch) {
     getPosts: (posts) => dispatch(getPosts(posts)),
     getCategories: (categories) => dispatch(getCategories(categories)),
     updatePostSort: (sort) => dispatch(updatePostSort(sort)),
+    updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
   }
 }
 

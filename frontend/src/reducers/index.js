@@ -34,6 +34,13 @@ function posts (state = [], action) {
       return Object.assign([], state, posts)
     case ADD_POST:
       return state.concat(post)
+    case VOTE_POST:
+      return state.map(p => {
+        if (p.id === post.id) {
+          p = post
+        }
+      return p
+      })
     default:
       return state
   }
