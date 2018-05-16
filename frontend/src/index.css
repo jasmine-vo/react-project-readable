@@ -45,6 +45,7 @@ body {
   font-size: 14px;
   color: #FB4742;
   height: 27px;
+  background-color: #fff;
 }
 
 .icon {
@@ -68,6 +69,9 @@ body {
   height: 40px;
   background-color: #FFF;
   border-bottom: 2px solid #F87370;
+  border-top: 1px solid #EFEFEF;
+  border-left: 1px solid #EFEFEF;
+  border-right: 1px solid #EFEFEF;
 }
 
 .category:hover {
@@ -254,4 +258,5 @@ input:disabled {
 
 .small-button {
   background-color: #FFF;
+  border: 1px solid #EFEFEF;
 }
