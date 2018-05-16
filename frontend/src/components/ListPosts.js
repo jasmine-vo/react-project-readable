@@ -10,7 +10,6 @@ import {
   getPosts,
   getCategories,
   updatePostSort,
-  updatePostScore
 } from '../actions';
 import PostIcon from '../icons/post.svg';
 
@@ -40,12 +39,6 @@ class ListPosts extends Component {
     this.setState(() => ({
       postModalOpen: false
     }))
-  }
-
-  handlePostVote = (postId, vote) => {
-    API.addPostVote(postId, vote).then((data) => {
-      this.props.updatePostScore(data);
-    });
   }
 
   render() {
@@ -163,7 +156,6 @@ function mapDispatchToProps (dispatch) {
     getPosts: (posts) => dispatch(getPosts(posts)),
     getCategories: (categories) => dispatch(getCategories(categories)),
     updatePostSort: (sort) => dispatch(updatePostSort(sort)),
-    updatePostScore: (post, vote) => dispatch(updatePostScore(post, vote)),
   }
 }
 
